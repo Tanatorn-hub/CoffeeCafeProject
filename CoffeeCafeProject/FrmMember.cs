@@ -287,5 +287,33 @@ namespace CoffeeCafeProject
         {
             this.Close();
         }
+
+        private void tbMemberPhone_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+
+            // อนุญาตให้กด Backspace ได้
+            if (char.IsControl(e.KeyChar))
+            {
+                e.Handled = false;
+            }
+            // ถ้าเป็นตัวเลข และยังไม่เกิน 10 ตัว
+            else if (char.IsDigit(e.KeyChar))
+            {
+                if (textBox.Text.Length < 10)
+                {
+                    e.Handled = false; // อนุญาตให้พิมพ์
+                }
+                else
+                {
+                    e.Handled = true; // เกิน 10 ตัว ไม่ให้พิมพ์
+                }
+            }
+            else
+            {
+                // ถ้าไม่ใช่ตัวเลขหรือ Backspace ไม่ให้พิมพ์
+                e.Handled = true;
+            }
+        }
     }
 }

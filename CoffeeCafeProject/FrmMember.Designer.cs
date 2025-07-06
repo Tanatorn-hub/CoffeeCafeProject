@@ -65,7 +65,7 @@
             // 
             this.lvShowAllMember.HideSelection = false;
             this.lvShowAllMember.Location = new System.Drawing.Point(39, 218);
-            this.lvShowAllMember.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lvShowAllMember.Margin = new System.Windows.Forms.Padding(4);
             this.lvShowAllMember.Name = "lvShowAllMember";
             this.lvShowAllMember.Size = new System.Drawing.Size(561, 383);
             this.lvShowAllMember.TabIndex = 46;
@@ -75,7 +75,7 @@
             // tbMemberName
             // 
             this.tbMemberName.Location = new System.Drawing.Point(401, 171);
-            this.tbMemberName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbMemberName.Margin = new System.Windows.Forms.Padding(4);
             this.tbMemberName.Name = "tbMemberName";
             this.tbMemberName.Size = new System.Drawing.Size(199, 22);
             this.tbMemberName.TabIndex = 44;
@@ -105,16 +105,17 @@
             // tbMemberPhone
             // 
             this.tbMemberPhone.Location = new System.Drawing.Point(167, 171);
-            this.tbMemberPhone.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbMemberPhone.Margin = new System.Windows.Forms.Padding(4);
             this.tbMemberPhone.Name = "tbMemberPhone";
             this.tbMemberPhone.Size = new System.Drawing.Size(199, 22);
             this.tbMemberPhone.TabIndex = 40;
+            this.tbMemberPhone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbMemberPhone_KeyPress);
             // 
             // pictureBox12
             // 
             this.pictureBox12.Image = global::CoffeeCafeProject.Properties.Resources.cofffeelogo;
             this.pictureBox12.Location = new System.Drawing.Point(645, 27);
-            this.pictureBox12.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox12.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(73, 68);
             this.pictureBox12.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -125,7 +126,7 @@
             // 
             this.pictureBox11.Image = global::CoffeeCafeProject.Properties.Resources.cofffeelogo;
             this.pictureBox11.Location = new System.Drawing.Point(37, 27);
-            this.pictureBox11.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox11.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(73, 68);
             this.pictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -136,7 +137,7 @@
             // 
             this.btClose.Image = global::CoffeeCafeProject.Properties.Resources.cancel;
             this.btClose.Location = new System.Drawing.Point(627, 517);
-            this.btClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btClose.Margin = new System.Windows.Forms.Padding(4);
             this.btClose.Name = "btClose";
             this.btClose.Size = new System.Drawing.Size(116, 84);
             this.btClose.TabIndex = 58;
@@ -150,7 +151,7 @@
             // 
             this.btDelete.Image = global::CoffeeCafeProject.Properties.Resources.delete;
             this.btDelete.Location = new System.Drawing.Point(627, 332);
-            this.btDelete.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btDelete.Margin = new System.Windows.Forms.Padding(4);
             this.btDelete.Name = "btDelete";
             this.btDelete.Size = new System.Drawing.Size(116, 84);
             this.btDelete.TabIndex = 57;
@@ -164,7 +165,7 @@
             // 
             this.btUpdate.Image = global::CoffeeCafeProject.Properties.Resources.update;
             this.btUpdate.Location = new System.Drawing.Point(627, 241);
-            this.btUpdate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btUpdate.Margin = new System.Windows.Forms.Padding(4);
             this.btUpdate.Name = "btUpdate";
             this.btUpdate.Size = new System.Drawing.Size(116, 84);
             this.btUpdate.TabIndex = 56;
@@ -178,7 +179,7 @@
             // 
             this.btSave.Image = global::CoffeeCafeProject.Properties.Resources.save;
             this.btSave.Location = new System.Drawing.Point(627, 150);
-            this.btSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btSave.Margin = new System.Windows.Forms.Padding(4);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(116, 84);
             this.btSave.TabIndex = 55;
@@ -192,7 +193,7 @@
             // 
             this.btCancel.Image = global::CoffeeCafeProject.Properties.Resources.reset;
             this.btCancel.Location = new System.Drawing.Point(627, 426);
-            this.btCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(116, 84);
             this.btCancel.TabIndex = 59;
@@ -216,7 +217,7 @@
             // tbMemberId
             // 
             this.tbMemberId.Location = new System.Drawing.Point(39, 171);
-            this.tbMemberId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tbMemberId.Margin = new System.Windows.Forms.Padding(4);
             this.tbMemberId.Name = "tbMemberId";
             this.tbMemberId.ReadOnly = true;
             this.tbMemberId.Size = new System.Drawing.Size(89, 22);
@@ -244,7 +245,7 @@
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "FrmMember";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
