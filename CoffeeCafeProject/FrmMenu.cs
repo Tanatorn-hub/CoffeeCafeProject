@@ -205,10 +205,10 @@ namespace CoffeeCafeProject
             {
                 // บันทึกลง DB ->
                 //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-                string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+                //string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
 
                 // สร้าง connection ไปยังฐานข้อมูล
-                using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+                using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
                 {
                     try
                     {
@@ -221,7 +221,7 @@ namespace CoffeeCafeProject
                         using (SqlCommand countCommand = new SqlCommand(countSQL, sqlConnection))
                         {
                             int rowCount = (int)countCommand.ExecuteScalar();
-                            if (rowCount == 10)
+                            if (rowCount >= 10) // ใช้ >= 10 เพื่อป้องกันกรณีเกิน 10 ด้วย
                             {
                                 showWarningMSG("เมนูมีได้แค่ 10 เมนู เท่านั้น หากจะเพิ่มให้ลบของเก่าออกก่อน");
                                 return;
@@ -333,10 +333,10 @@ namespace CoffeeCafeProject
             {
                 //ลบออกจาก Database จากตารางใน DB เงื่อนไขคือ menuId
                 //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-                string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+                //string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
 
                 // สร้าง connection ไปยังฐานข้อมูล
-                using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+                using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
                 {
                     try
                     {
@@ -377,79 +377,49 @@ namespace CoffeeCafeProject
 
         private void btUpdate_Click(object sender, EventArgs e)
         {
-
-            //Validate UI ก่อนเหมือนกดปุ่มบันทึก
-            if (tbMenuName.Text.Trim() == "")
+            if (menuImage == null)
             {
-                showWarningMSG("ป้อนชื่อสินค้าด้วย...");
+                showWarningMSG("เลือกรูปเมนูด้วย...");
             }
-            else if (tbMenuPrice.Text.Trim() == "")
+            else if (tbMenuName.Text.Length == 0)
             {
-                showWarningMSG("ป้อนราคาด้วย...");
+                showWarningMSG("ป้อนชื่อเมนูด้วย...");
+            }
+            else if (tbMenuPrice.Text.Length == 0)
+            {
+                showWarningMSG("ป้อนราคาเมนูด้วย...");
             }
             else
             {
-                // บันทึกลง DB ->
-                //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-                string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+                
 
-                // สร้าง connection ไปยังฐานข้อมูล
-                using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+                using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
+                {
                     try
                     {
                         sqlConnection.Open();
+                        SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
 
-                        //ก่อนจะบนทึกให้ตรวจสอบก่อนว่าเมนูอยู่แล้ว 10 เมนู หรืยัง ถ้า10 เมนูแล้วให้แสดงข้อความเตือนผู้ใช้บันทึกไม่ได้
-                        //ต้องเอาของเก่าออกก่อน
+                        string strSql = "UPDATE menu_tb SET " +
+                                        "menuName = @menuName, " +
+                                        "menuPrice = @menuPrice, " +
+                                        "menuImage = @menuImage " +  // ตัดคอมมาออก
+                                        "WHERE menuId = @menuId";
 
-                        string countSQL = "SELECT COUNT(*) FROM menu_tb";
-                        using (SqlCommand countCommand = new SqlCommand(countSQL, sqlConnection))
+                        using (SqlCommand sqlCommand = new SqlCommand(strSql, sqlConnection, sqlTransaction))
                         {
-                            int rowCount = (int)countCommand.ExecuteScalar();
-                            if (rowCount == 10)
-                            {
-                                showWarningMSG("เมนูมีได้แค่ 10 เมนู เท่านั้น หากจะเพิ่มให้ลบของเก่าออกก่อน");
-                                return;
-
-                            }
-                        }
-
-                        SqlTransaction sqlTransaction = sqlConnection.BeginTransaction(); // ใช้กับ Insert/update/delete
-
-                        //คำสั่ง SQL จะมี 2 แบบคือ แบบแก้รูป กับไม่แก้รูป
-                        string strSQL = "";
-                        if (menuImage == null)
-                        { //ไม่แก้รูป
-                            strSQL = "UPDATE menu_tb SET menuName = @menuName, menuPrice=@menuPrice " +
-                                     "WHERE menuId=menuId";
-                        }
-                        else
-                        { //แก้รูป
-                            strSQL = "UPDATE menu_tb SET menuName = @menuName, menuPrice=@menuPrice, menuImage=@menuImage " +
-                                    "WHERE menuId=@menuId";
-
-                        }
-
-                        // กำหนดค่าให้กับ SQL Parameter  และสั่งให้คำสั่ง SQL ทำงาน  แล้วมีข้อความแจ้งเมื่อทำงานเสร็จแล้ว
-                        using (SqlCommand sqlCommand = new SqlCommand(strSQL, sqlConnection, sqlTransaction))
-                        {
-                            sqlCommand.Parameters.Add("@menuId", SqlDbType.Int).Value = int.Parse (tbMenuId.Text);
                             sqlCommand.Parameters.Add("@menuName", SqlDbType.NVarChar, 100).Value = tbMenuName.Text;
                             sqlCommand.Parameters.Add("@menuPrice", SqlDbType.Float).Value = float.Parse(tbMenuPrice.Text);
-                            if (menuImage != null)
-                            { 
-                                sqlCommand.Parameters.Add("@menuImage", SqlDbType.Image).Value = menuImage;
-                            }
+                            sqlCommand.Parameters.Add("@menuImage", SqlDbType.Image).Value = menuImage;
+                            sqlCommand.Parameters.Add("@menuId", SqlDbType.Int).Value = int.Parse(tbMenuId.Text);
 
-                            //สั่งให้คำสั่ง sql ทำงาน
                             sqlCommand.ExecuteNonQuery();
                             sqlTransaction.Commit();
 
-                            //ข้อความแจ้ง
-                            MessageBox.Show("แก้ไขเรียบร้อยแล้ว", "ผลการทำงาน", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            MessageBox.Show("อัปเดตข้อมูลเรียบร้อยแล้ว", "ผลการทำงาน", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            // อัปเดตListView
-                            getAllMenuToListView(); // ดึงข้อมูล
+                            getAllMenuToListView();
+                            menuImage = null;
                             pbMenuImage.Image = null;
                             tbMenuId.Clear();
                             tbMenuName.Clear();
@@ -458,8 +428,9 @@ namespace CoffeeCafeProject
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("พบข้อผิดพลาด  กรุณาลองใหม่หรือติดต่อ IT : " + ex.Message);
+                        MessageBox.Show("พบข้อผิดพลาด กรุณาลองใหม่ หรือติดต่อ IT : " + ex.Message);
                     }
+                }
             }
         }
 
@@ -475,7 +446,7 @@ namespace CoffeeCafeProject
             btUpdate.Enabled = false;
             btDelete.Enabled = false;
         }
-
+         
         private void btClose_Click(object sender, EventArgs e)
         {
             this.Close();

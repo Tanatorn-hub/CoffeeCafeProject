@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CoffeeCafeProject
@@ -27,10 +21,10 @@ namespace CoffeeCafeProject
         private void getAllMemberToListView()
         {
             //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-            string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+            //string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
 
             // สร้าง connection ไปยังฐานข้อมูล
-            using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+            using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
             {
                 try
                 {
@@ -104,10 +98,10 @@ namespace CoffeeCafeProject
             {
                 // บันทึกลง DB ->
                 //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-                string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+                //string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
 
                 // สร้าง connection ไปยังฐานข้อมูล
-                using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+                using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
                 {
                     try
                     {
@@ -115,15 +109,16 @@ namespace CoffeeCafeProject
 
                         SqlTransaction sqlTransaction = sqlConnection.BeginTransaction(); // ใช้กับ Insert/update/delete
 
-                        //คำสั่ง SQL
-                        string strSQL = "INSERT INTO member_tb (memberName,memberPhone) " +
-                                        "VALUES (@memberName,@memberPhone)";
+                        //คำสั่ง SQL 
+                        string strSQL = "INSERT INTO member_tb (memberName,memberPhone,memberScore) " +
+                                        "VALUES (@memberName,@memberPhone,@memberScore)";
 
                         // กำหนดค่าให้กับ SQL Parameter  และสั่งให้คำสั่ง SQL ทำงาน  แล้วมีข้อความแจ้งเมื่อทำงานเสร็จแล้ว
                         using (SqlCommand sqlCommand = new SqlCommand(strSQL, sqlConnection, sqlTransaction))
                         {
                             sqlCommand.Parameters.Add("@memberName", SqlDbType.NVarChar, 100).Value = tbMemberName.Text;
                             sqlCommand.Parameters.Add("@memberPhone", SqlDbType.NVarChar, 50).Value = tbMemberPhone.Text;
+                            sqlCommand.Parameters.Add("@memberScore", SqlDbType.Int).Value = 0;
 
 
                             //สั่งให้คำสั่ง sql ทำงาน
@@ -168,10 +163,10 @@ namespace CoffeeCafeProject
             {
                 //ลบออกจาก Database จากตารางใน DB เงื่อนไขคือ menuId
                 //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-                string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+                //string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
 
                 // สร้าง connection ไปยังฐานข้อมูล
-                using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+                using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
                 {
                     try
                     {
@@ -225,10 +220,10 @@ namespace CoffeeCafeProject
             {
                 // บันทึกลง DB ->
                 //กำหนด connect String เพื่อติดต่อไปยังฐานข้อมูล
-                string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
+                //string connectionstring = @"server=DESKTOP-6F6L1NQ\SQLEXPRESS2022;Database=coffee_cafe_db;Trusted_Connection=True;";
 
                 // สร้าง connection ไปยังฐานข้อมูล
-                using (SqlConnection sqlConnection = new SqlConnection(connectionstring))
+                using (SqlConnection sqlConnection = new SqlConnection(ShareResource.connectionstring))
                 {
                     try
                     {
